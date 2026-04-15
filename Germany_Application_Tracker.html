@@ -37,7 +37,92 @@
     --shadow-xl: 0 20px 50px -8px rgba(0,0,0,0.9);
     --radius: 10px;
     --sans: 'Inter', -apple-system, sans-serif;
+    --card-bg: transparent;
   }
+
+  /* ── LIGHT MODE ── */
+  body.light {
+    --bg: #f1f0eb;
+    --surface: rgba(255,255,255,0.72);
+    --surface2: rgba(255,255,255,0.55);
+    --surface3: rgba(255,255,255,0.40);
+    --border: rgba(0,0,0,0.08);
+    --border2: rgba(0,0,0,0.13);
+    --accent: #2563eb;
+    --accent-light: rgba(37,99,235,0.10);
+    --accent-hover: #1d4ed8;
+    --green: #16a34a;
+    --green-light: rgba(22,163,74,0.10);
+    --orange: #d97706;
+    --orange-light: rgba(217,119,6,0.10);
+    --red: #dc2626;
+    --red-light: rgba(220,38,38,0.10);
+    --purple: #7c3aed;
+    --purple-light: rgba(124,58,237,0.10);
+    --pink: #db2777;
+    --pink-light: rgba(219,39,119,0.10);
+    --yellow: #ca8a04;
+    --yellow-light: rgba(202,138,4,0.10);
+    --text: #1a1a1a;
+    --text2: #4b5563;
+    --text3: #9ca3af;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.07);
+    --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.10);
+    --shadow-xl: 0 20px 50px -8px rgba(0,0,0,0.15);
+    --card-bg: rgba(255,255,255,0.60);
+  }
+
+  body.light .table-wrap {
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(0,0,0,0.09);
+  }
+
+  body.light thead { background: rgba(255,255,255,0.80); }
+  body.light th { background: rgba(255,255,255,0.80); color: #6b7280; }
+  body.light th:hover { background: rgba(255,255,255,0.95); color: var(--text); }
+  body.light tbody tr:hover { background: rgba(255,255,255,0.55); }
+  body.light .header { background: rgba(255,255,255,0.75); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: rgba(0,0,0,0.08); }
+  body.light .prog-strip { background: rgba(255,255,255,0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-color: rgba(0,0,0,0.07); }
+  body.light .toolbar { background: rgba(255,255,255,0.65); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-color: rgba(0,0,0,0.07); }
+  body.light select { background-color: rgba(255,255,255,0.80); color: var(--text); }
+  body.light .search-wrap input { background: rgba(255,255,255,0.80); color: var(--text); }
+  body.light .modal { background: rgba(245,244,240,0.97); border: 1px solid rgba(0,0,0,0.10); }
+  body.light .modal-header { border-color: rgba(0,0,0,0.08); }
+  body.light .form-group input,
+  body.light .form-group select,
+  body.light .form-group textarea { background: rgba(255,255,255,0.90); color: var(--text); border-color: rgba(0,0,0,0.15); }
+  body.light .stat-pill { background: rgba(255,255,255,0.80); border-color: rgba(0,0,0,0.10); }
+
+  body.light .chip-blue   { background: rgba(37,99,235,0.10); color: #1d4ed8; border-color: rgba(37,99,235,0.25); }
+  body.light .chip-green  { background: rgba(22,163,74,0.10); color: #15803d; border-color: rgba(22,163,74,0.25); }
+  body.light .chip-orange { background: rgba(217,119,6,0.10); color: #b45309; border-color: rgba(217,119,6,0.25); }
+  body.light .chip-red    { background: rgba(220,38,38,0.10); color: #b91c1c; border-color: rgba(220,38,38,0.25); }
+  body.light .chip-purple { background: rgba(124,58,237,0.10); color: #6d28d9; border-color: rgba(124,58,237,0.25); }
+  body.light .chip-gray   { background: rgba(107,114,128,0.10); color: #4b5563; border-color: rgba(107,114,128,0.20); }
+  body.light .chip-pink   { background: rgba(219,39,119,0.10); color: #be185d; border-color: rgba(219,39,119,0.25); }
+  body.light .chip-teal   { background: rgba(15,118,110,0.10); color: #0f766e; border-color: rgba(15,118,110,0.25); }
+
+  body.light .badge.not-started  { background: rgba(148,163,184,0.12); color: #475569; border-color: rgba(148,163,184,0.30); }
+  body.light .badge.in-progress  { background: rgba(37,99,235,0.10);  color: #1d4ed8; border-color: rgba(37,99,235,0.25); }
+  body.light .badge.applied      { background: rgba(22,163,74,0.10);  color: #15803d; border-color: rgba(22,163,74,0.25); }
+  body.light .badge.vpd-pending  { background: rgba(217,119,6,0.10);  color: #b45309; border-color: rgba(217,119,6,0.25); }
+  body.light .badge.lom-pending  { background: rgba(219,39,119,0.10); color: #be185d; border-color: rgba(219,39,119,0.25); }
+  body.light .badge.docs-pending { background: rgba(124,58,237,0.10); color: #6d28d9; border-color: rgba(124,58,237,0.25); }
+  body.light .badge.complete     { background: rgba(22,163,74,0.12);  color: #15803d; border-color: rgba(22,163,74,0.30); font-weight:700; }
+  body.light .badge.rejected     { background: rgba(220,38,38,0.10);  color: #b91c1c; border-color: rgba(220,38,38,0.25); }
+  body.light .badge.waitlisted   { background: rgba(202,138,4,0.10);  color: #92400e; border-color: rgba(202,138,4,0.25); }
+  body.light .badge.interview    { background: rgba(22,163,74,0.10);  color: #15803d; border-color: rgba(22,163,74,0.25); }
+
+  body.light .nc-frei       { background: rgba(22,163,74,0.10); color: #15803d; border-color: rgba(22,163,74,0.25); }
+  body.light .nc-restricted { background: rgba(220,38,38,0.10); color: #b91c1c; border-color: rgba(220,38,38,0.25); }
+  body.light .nc-unknown    { background: rgba(107,114,128,0.10); color: #4b5563; border-color: rgba(107,114,128,0.20); }
+
+  body.light .toast { background: rgba(255,255,255,0.95); border-color: rgba(0,0,0,0.12); color: var(--text); }
+  body.light .status-menu { background: rgba(255,255,255,0.97); border-color: rgba(0,0,0,0.12); }
+  body.light .save-notice { background: rgba(255,255,255,0.90); border-color: rgba(0,0,0,0.10); }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -906,6 +991,8 @@
   <select id="sortBy" onchange="render()">
     <option value="deadline">Deadline ↑</option>
     <option value="deadline_desc">Deadline ↓</option>
+    <option value="start">App. Opens ↑</option>
+    <option value="start_desc">App. Opens ↓</option>
     <option value="name">University A–Z</option>
     <option value="status">Status</option>
     <option value="fee">Semester Fee</option>
@@ -919,6 +1006,7 @@
   </div>
 
   <div class="ml-auto" style="display:flex;gap:8px;align-items:center">
+    <button class="btn btn-outline" id="themeBtn" onclick="toggleTheme()" title="Toggle light/dark mode">☀️</button>
     <button class="btn btn-outline" onclick="exportCSV()">↓ CSV</button>
     <button class="btn btn-outline" id="saveFileBtn" onclick="saveAsFile()" title="Download HTML with data baked in — replace the GitHub file with this">💾 Save File</button>
     <button class="btn btn-primary" onclick="openModal()">+ Add</button>
@@ -1469,12 +1557,32 @@ function sortData(arr) {
   return [...arr].sort((a, b) => {
     if (by === 'deadline')      return (!a.end?1:!b.end?-1:new Date(a.end)-new Date(b.end));
     if (by === 'deadline_desc') return (!a.end?1:!b.end?-1:new Date(b.end)-new Date(a.end));
+    if (by === 'start')         return (!a.start?1:!b.start?-1:new Date(a.start)-new Date(b.start));
+    if (by === 'start_desc')    return (!a.start?1:!b.start?-1:new Date(b.start)-new Date(a.start));
     if (by === 'name')    return a.name.localeCompare(b.name);
     if (by === 'status')  return STATUS_ORDER.indexOf(a.status)-STATUS_ORDER.indexOf(b.status);
     if (by === 'fee')     return (a.fee||0)-(b.fee||0);
     return 0;
   });
 }
+
+// ── THEME TOGGLE ──
+function toggleTheme() {
+  const isLight = document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent = isLight ? '🌙' : '☀️';
+  localStorage.setItem('tracker_theme', isLight ? 'light' : 'dark');
+}
+(function initTheme() {
+  const saved = localStorage.getItem('tracker_theme');
+  if (saved === 'light') {
+    document.body.classList.add('light');
+    // btn might not exist yet at parse time; set after DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = '🌙';
+    });
+  }
+})();
 
 function groupData(arr) {
   const by = document.getElementById('groupBy').value;
@@ -1555,6 +1663,7 @@ function render() {
       <th onclick="setSortBy('name')">University / Programme <span class="sort-icon">↕</span></th>
       <th>Method</th>
       <th>NC</th>
+      <th onclick="setSortBy('start')">App. Opens <span class="sort-icon">↕</span></th>
       <th onclick="setSortBy('deadline')">Deadline <span class="sort-icon">↕</span></th>
       <th>Time Left</th>
       <th onclick="setSortBy('status')">Status <span class="sort-icon">↕</span></th>
@@ -1567,7 +1676,7 @@ function render() {
     </tr></thead><tbody>`;
 
     if (!items.length) {
-      html += `<tr><td colspan="12" class="empty-state"><p>No results.</p></td></tr>`;
+      html += `<tr><td colspan="13" class="empty-state"><p>No results.</p></td></tr>`;
     }
 
     items.forEach(item => {
@@ -1620,8 +1729,10 @@ function render() {
         <td>${methodHtml}</td>
         <td>${ncHtml}</td>
         <td style="white-space:nowrap">
+          ${item.start ? `<span style="font-size:12px;font-weight:600;color:var(--text)">${fmtDate(item.start)}</span>` : '<span style="color:var(--text3)">—</span>'}
+        </td>
+        <td style="white-space:nowrap">
           ${item.end ? `<span style="font-size:12px;font-weight:600;color:var(--text)">${fmtDate(item.end)}</span>` : '<span style="color:var(--text3)">—</span>'}
-          ${item.start ? `<span style="font-size:10px;color:var(--text3);display:block;margin-top:2px">from ${fmtDate(item.start)}</span>` : ''}
         </td>
         <td>
           <div class="timer-cell" data-end="${item.end||''}" data-start="${item.start||''}">
