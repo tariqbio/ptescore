@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🇩🇪 Germany Application Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --surface2: #f8fafc;
+    --surface3: #f1f5f9;
+    --border: #e2e8f0;
+    --border2: #cbd5e1;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --accent-hover: #1d4ed8;
+    --green: #059669;
+    --green-light: #ecfdf5;
+    --orange: #d97706;
+    --orange-light: #fffbeb;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --purple: #7c3aed;
+    --purple-light: #f5f3ff;
+    --pink: #db2777;
+    --pink-light: #fdf2f8;
+    --yellow: #ca8a04;
+    --yellow-light: #fefce8;
+    --text: #0f172a;
+    --text2: #475569;
+    --text3: #94a3b8;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -1px rgba(0,0,0,0.04);
+    --shadow-lg: 0 10px 25px -3px rgba(0,0,0,0.08), 0 4px 8px -2px rgba(0,0,0,0.05);
+    --shadow-xl: 0 20px 50px -8px rgba(0,0,0,0.12);
+    --radius: 10px;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 13px;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .brand-flag {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #000 33%, #d00 33% 66%, #fc0 66%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  .brand-text h1 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.3px;
+  }
+
+  .brand-text p {
+    font-size: 11px;
+    color: var(--text3);
+    margin-top: 1px;
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    font-size: 12px;
+  }
+
+  .stat-pill .num {
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .stat-pill .lbl {
+    font-size: 10px;
+    color: var(--text3);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .prog-strip {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .prog-strip::-webkit-scrollbar { display: none; }
+
+  .prog-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .prog-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── TOOLBAR ── */
+  .toolbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .tlabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  select {
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 7px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 26px;
+  }
+
+  select:hover { border-color: var(--accent); }
+  select:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.1); }
+
+  .search-wrap { position: relative; }
+  .search-wrap input {
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 12px;
+    padding: 6px 10px 6px 30px;
+    border-radius: 7px;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .search-wrap input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text3);
+    pointer-events: none;
+    font-size: 13px;
+  }
+
+  .divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
+  .ml-auto { margin-left: auto; }
+
+  .btn {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 7px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    line-height: 1.4;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 1px 3px rgba(37,99,235,0.2);
+  }
+
+  .btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+  .btn-outline {
+    background: var(--surface);
+    color: var(--text2);
+    border-color: var(--border2);
+  }
+
+  .btn-outline:hover { border-color: var(--border2); background: var(--surface3); color: var(--text); }
+
+  .btn-danger-sm {
+    background: transparent;
+    color: var(--text3);
+    border-color: var(--border);
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .btn-danger-sm:hover { color: var(--red); border-color: var(--red); background: var(--red-light); }
+
+  .btn-edit-sm {
+    background: transparent;
+    color: var(--text3);
+    border-color: var(--border);
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .btn-edit-sm:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-light); }
+
+  /* ── MAIN ── */
+  .main { padding: 24px 32px; }
+
+  .group-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 28px 0 10px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+  }
+
+  .group-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .group-count {
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1px 8px;
+    font-size: 10px;
+    color: var(--text2);
+    font-weight: 600;
+  }
+
+  /* ── TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    background: var(--surface);
+    margin-bottom: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  thead { background: var(--surface2); }
+
+  th {
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    white-space: nowrap;
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s, background 0.15s;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+  th:last-child { border-right: none; }
+  th:hover { color: var(--text); background: var(--surface3); }
+  th.sorted { color: var(--accent); }
+
+  .sort-icon { margin-left: 3px; opacity: 0.4; font-size: 9px; }
+  th.sorted .sort-icon { opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fafbff; }
+  tbody tr.expired { opacity: 0.55; }
+
+  td {
+    padding: 11px 14px;
+    vertical-align: middle;
+    border-right: 1px solid var(--border);
+    color: var(--text2);
+  }
+
+  td:last-child { border-right: none; }
+
+  .uni-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+    max-width: 200px;
+  }
+
+  .uni-sub {
+    font-size: 11px;
+    color: var(--accent);
+    font-weight: 500;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .uni-meta {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+  }
+
+  .uni-link {
+    font-size: 10px;
+    color: var(--text3);
+    text-decoration: none;
+    transition: color 0.15s;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    margin-top: 3px;
+  }
+
+  .uni-link:hover { color: var(--accent); }
+
+  /* STATUS BADGES */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+
+  .badge:hover { filter: brightness(0.95); }
+
+  .badge.not-started    { background: #f1f5f9; color: #64748b; border-color: var(--border2); }
+  .badge.in-progress    { background: var(--accent-light); color: var(--accent); border-color: #bfdbfe; }
+  .badge.applied        { background: var(--green-light); color: var(--green); border-color: #a7f3d0; }
+  .badge.vpd-pending    { background: var(--orange-light); color: var(--orange); border-color: #fde68a; }
+  .badge.lom-pending    { background: var(--pink-light); color: var(--pink); border-color: #fbcfe8; }
+  .badge.docs-pending   { background: var(--purple-light); color: var(--purple); border-color: #ddd6fe; }
+  .badge.complete       { background: var(--green-light); color: var(--green); border-color: #6ee7b7; font-weight: 700; }
+  .badge.rejected       { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+  .badge.waitlisted     { background: var(--yellow-light); color: var(--yellow); border-color: #fde68a; }
+  .badge.interview      { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; display: inline-block; flex-shrink: 0; }
+  .dot.pulse { animation: pulse 1.5s infinite; }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* FIELD BADGES */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+  }
+
+  .chip-blue   { background: var(--accent-light); color: var(--accent); border-color: #bfdbfe; }
+  .chip-green  { background: var(--green-light); color: var(--green); border-color: #a7f3d0; }
+  .chip-orange { background: var(--orange-light); color: var(--orange); border-color: #fde68a; }
+  .chip-red    { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+  .chip-purple { background: var(--purple-light); color: var(--purple); border-color: #ddd6fe; }
+  .chip-gray   { background: #f1f5f9; color: #64748b; border-color: var(--border2); }
+  .chip-pink   { background: var(--pink-light); color: var(--pink); border-color: #fbcfe8; }
+  .chip-teal   { background: #f0fdfa; color: #0f766e; border-color: #99f6e4; }
+
+  /* TIMER */
+  .timer {
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .timer.ok      { color: var(--green); }
+  .timer.warning { color: var(--orange); }
+  .timer.urgent  { color: var(--red); animation: timerPulse 1s infinite; }
+  .timer.expired { color: var(--text3); font-weight: 400; }
+
+  @keyframes timerPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .timer-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 5px;
+    overflow: hidden;
+    width: 110px;
+  }
+
+  .timer-bar {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s linear;
+  }
+
+  .timer-bar.ok      { background: var(--green); }
+  .timer-bar.warning { background: var(--orange); }
+  .timer-bar.urgent  { background: var(--red); }
+
+  /* ACTIONS */
+  .actions { display: flex; gap: 4px; align-items: center; }
+
+  /* EMPTY STATE */
+  .empty-state { text-align: center; padding: 48px; color: var(--text3); }
+  .empty-state p { font-size: 13px; }
+
+  /* STATUS POPUP */
+  .status-menu {
+    position: fixed;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-xl);
+    z-index: 9999;
+    min-width: 210px;
+  }
+
+  .status-menu-item {
+    padding: 9px 14px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.1s;
+  }
+
+  .status-menu-item:hover { background: var(--surface2); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15,23,42,0.4);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    width: 680px;
+    max-width: 100%;
+    max-height: 92vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-xl);
+    animation: slideUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-header h2 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .modal-close {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text2);
+    width: 28px;
+    height: 28px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    line-height: 1;
+  }
+
+  .modal-close:hover { background: var(--red-light); color: var(--red); border-color: #fecaca; }
+
+  .section-divider {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text3);
+    margin: 20px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group.third { grid-column: span 1; }
+
+  .form-group label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text2);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .required-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--red);
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 400;
+    padding: 8px 11px;
+    border-radius: 7px;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  .form-group select {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+
+  .form-group textarea {
+    resize: vertical;
+    min-height: 64px;
+    line-height: 1.5;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+
+  .form-group input[type="date"] { color-scheme: light; }
+
+  .form-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    justify-content: flex-end;
+  }
+
+  .btn-save {
+    background: var(--accent);
+    color: #fff;
+    border: 1px solid var(--accent);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+    box-shadow: 0 1px 3px rgba(37,99,235,0.25);
+  }
+
+  .btn-save:hover { background: var(--accent-hover); }
+
+  .btn-cancel {
+    background: var(--surface);
+    color: var(--text2);
+    border: 1px solid var(--border2);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-cancel:hover { background: var(--surface3); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--text);
+    color: #fff;
+    padding: 11px 18px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 9999;
+    transform: translateX(120%);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    max-width: 320px;
+  }
+
+  .toast.show { transform: translateX(0); }
+  .toast.error { background: var(--red); }
+  .toast.success { background: var(--green); }
+
+  /* ── SAVE NOTICE ── */
+  .save-notice {
+    position: fixed;
+    top: 72px;
+    right: 24px;
+    background: var(--accent);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: var(--shadow);
+  }
+
+  .save-notice.show { opacity: 1; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text3); }
+
+  @media (max-width: 768px) {
+    .header { padding: 0 16px; height: auto; padding-top: 12px; padding-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .toolbar, .prog-strip { padding: 10px 16px; }
+    .main { padding: 16px; }
+    .form-grid { grid-template-columns: 1fr; }
+    .header-stats { flex-wrap: wrap; }
+  }
+
+  .nc-badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
+  .nc-frei { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+  .nc-restricted { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+  .nc-unknown { background: #f8fafc; color: #94a3b8; border: 1px solid #e2e8f0; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-brand">
+    <div class="brand-flag">🇩🇪</div>
+    <div class="brand-text">
+      <h1>Germany Application Tracker</h1>
+      <p>MSc Programme Dashboard · WiSe 2026/27</p>
+    </div>
+  </div>
+  <div class="header-stats" id="statsRow"></div>
+</div>
+
+<!-- PROGRESS STRIP -->
+<div class="prog-strip" id="progressBar"></div>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <span class="tlabel">Group</span>
+  <select id="groupBy" onchange="render()">
+    <option value="none">— None —</option>
+    <option value="status">Status</option>
+    <option value="month">Deadline Month</option>
+    <option value="method">App. Method</option>
+    <option value="pte">English Req.</option>
+    <option value="nc">NC Status</option>
+  </select>
+
+  <div class="divider"></div>
+
+  <span class="tlabel">Sort</span>
+  <select id="sortBy" onchange="render()">
+    <option value="deadline">Deadline ↑</option>
+    <option value="deadline_desc">Deadline ↓</option>
+    <option value="name">University A–Z</option>
+    <option value="status">Status</option>
+    <option value="fee">Semester Fee</option>
+  </select>
+
+  <div class="divider"></div>
+
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="search" placeholder="Search universities..." oninput="render()">
+  </div>
+
+  <div class="ml-auto" style="display:flex;gap:8px">
+    <button class="btn btn-outline" onclick="exportCSV()">↓ CSV</button>
+    <button class="btn btn-outline" onclick="saveAsFile()" title="Save changes back to HTML file (works in all browsers)">💾 Save File</button>
+    <button class="btn btn-primary" onclick="openModal()">+ Add</button>
+  </div>
+</div>
+
+<!-- MAIN TABLE -->
+<div class="main" id="mainContent"></div>
+
+<!-- STATUS POPUP -->
+<div class="status-menu" id="statusMenu" style="display:none"></div>
+
+<!-- SAVE NOTICE -->
+<div class="save-notice" id="saveNotice">💾 Click "Save File" to persist changes</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modalTitle">Add University</h2>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="section-divider">University Info</div>
+    <div class="form-grid">
+      <div class="form-group full">
+        <label><span class="required-dot"></span> University Name</label>
+        <input type="text" id="f_name" placeholder="e.g. Philipps-Universität Marburg">
+      </div>
+      <div class="form-group full">
+        <label>Programme / Subject</label>
+        <input type="text" id="f_subject" placeholder="e.g. Data Science M.Sc.">
+      </div>
+      <div class="form-group">
+        <label>City</label>
+        <input type="text" id="f_city" placeholder="e.g. Marburg, Hesse">
+      </div>
+      <div class="form-group">
+        <label>University Type</label>
+        <select id="f_type">
+          <option value="">— Unknown —</option>
+          <option value="Uni">University (Uni)</option>
+          <option value="TU">Technical University (TU)</option>
+          <option value="FH">University of Applied Sciences (FH)</option>
+          <option value="HPI">HPI / Research Institute</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Application / Programme Link</label>
+        <input type="text" id="f_link" placeholder="https://...">
+      </div>
+    </div>
+
+    <div class="section-divider">Application Details</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Application Method</label>
+        <select id="f_method">
+          <option value="">— Unknown —</option>
+          <option value="Portal">Direct Portal</option>
+          <option value="UniAssist">UniAssist</option>
+          <option value="VPD+Portal">VPD + Portal</option>
+          <option value="VPD+UniAssist">VPD + UniAssist</option>
+          <option value="Direct">Direct (Email/Post)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>NC Status</label>
+        <select id="f_nc">
+          <option value="">— Unknown —</option>
+          <option value="NC-frei">NC-frei ✓</option>
+          <option value="NC">NC / Restricted ✗</option>
+          <option value="Points">Points-based</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>App. Start Date</label>
+        <input type="date" id="f_start">
+      </div>
+      <div class="form-group">
+        <label><span class="required-dot"></span> Deadline</label>
+        <input type="date" id="f_end">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select id="f_status">
+          <option value="not-started">Not Started</option>
+          <option value="in-progress">In Progress</option>
+          <option value="docs-pending">Documents Pending</option>
+          <option value="vpd-pending">VPD Pending</option>
+          <option value="lom-pending">LOM Pending</option>
+          <option value="applied">Applied ✓</option>
+          <option value="interview">Interview</option>
+          <option value="waitlisted">Waitlisted</option>
+          <option value="complete">Admitted ✓</option>
+          <option value="rejected">Rejected ✗</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Semester Fee (€)</label>
+        <input type="number" id="f_fee" placeholder="e.g. 350" min="0" step="1">
+      </div>
+    </div>
+
+    <div class="section-divider">Documents & Requirements</div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>English Req.</label>
+        <select id="f_pte">
+          <option value="">— Unknown —</option>
+          <option value="PTE">PTE Academic</option>
+          <option value="MOI">MOI Letter</option>
+          <option value="PTE+MOI">PTE or MOI</option>
+          <option value="IELTS">IELTS Only</option>
+          <option value="TOEFL">TOEFL Only</option>
+          <option value="No">Not Required</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>LOM / LoR</label>
+        <select id="f_lom">
+          <option value="">Not Required</option>
+          <option value="1 LOM">1 LOM Required</option>
+          <option value="2 LOM">2 LOMs Required</option>
+          <option value="3 LOM">3 LOMs Required</option>
+          <option value="1 LOR">1 LoR Required</option>
+          <option value="2 LOR">2 LoRs Required</option>
+          <option value="Submitted">Submitted ✓</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Language of Instruction</label>
+        <select id="f_lang">
+          <option value="">— Unknown —</option>
+          <option value="English">English</option>
+          <option value="German">German</option>
+          <option value="English/German">English + German</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Motivation Letter</label>
+        <select id="f_motivletter">
+          <option value="">Not Required</option>
+          <option value="Required">Required</option>
+          <option value="Submitted">Submitted ✓</option>
+          <option value="Optional">Optional</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Notes / Extra Requirements</label>
+        <textarea id="f_notes" placeholder="e.g. Grading system required, specific prerequisites, APS certificate..."></textarea>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEntry()">💾 Save Entry</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════
+// DATA — embedded directly in the HTML for cross-browser persistence
+// ══════════════════════════════════════════════════
+const STORAGE_KEY = 'germany_apps_v3';
+
+/* ===== DEFAULT DATA ===== */
+const DEFAULT_DATA = [
+  {
+    id: 1,
+    name: "HPI (Univ. of Potsdam)",
+    subject: "Computer Science M.Sc.",
+    city: "Potsdam, Brandenburg",
+    type: "HPI",
+    link: "https://hpi.de/en/studies/before-your-studies/application/",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "2026-04-01",
+    end: "2026-06-01",
+    status: "not-started",
+    fee: 390,
+    pte: "PTE",
+    lom: "",
+    lang: "English",
+    motivletter: "Required",
+    notes: "Ambitious — highly selective. Strong research focus."
+  },
+  {
+    id: 2,
+    name: "University of Hildesheim",
+    subject: "ISMLL Data Analytics",
+    city: "Hildesheim, Lower Saxony",
+    type: "Uni",
+    link: "https://www.uni-hildesheim.de/en/",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "2026-04-01",
+    end: "2026-06-30",
+    status: "not-started",
+    fee: 380,
+    pte: "MOI",
+    lom: "1 LOM",
+    lang: "English",
+    motivletter: "Required",
+    notes: "MOI explicitly accepted per programme page."
+  },
+  {
+    id: 3,
+    name: "Philipps-Universität Marburg",
+    subject: "Data Science M.Sc.",
+    city: "Marburg, Hesse",
+    type: "Uni",
+    link: "https://www.uni-marburg.de/en/studying/after-your-first-degree/masters-programs/degree-programs/datasciencems",
+    method: "Portal",
+    nc: "Points",
+    start: "2026-05-01",
+    end: "2026-06-30",
+    status: "not-started",
+    fee: 325,
+    pte: "PTE",
+    lom: "",
+    lang: "English",
+    motivletter: "Required",
+    notes: "~75/100 pts est. (cutoff 65). Strong eligibility."
+  },
+  {
+    id: 4,
+    name: "University of Oldenburg",
+    subject: "Data Science & ML M.Sc.",
+    city: "Oldenburg, Lower Saxony",
+    type: "Uni",
+    link: "https://uol.de/en/course-of-study/635",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "",
+    end: "2026-04-30",
+    status: "not-started",
+    fee: 400,
+    pte: "No",
+    lom: "",
+    lang: "English",
+    motivletter: "",
+    notes: "UNCERTAIN — PTE acceptance not confirmed. Verify."
+  },
+  {
+    id: 5,
+    name: "University of Freiburg",
+    subject: "Computer Science M.Sc.",
+    city: "Freiburg, Baden-Württemberg",
+    type: "Uni",
+    link: "https://www.informatik.uni-freiburg.de/index.html",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "2026-04-15",
+    end: "2026-05-31",
+    status: "not-started",
+    fee: 370,
+    pte: "PTE",
+    lom: "1 LOM",
+    lang: "English",
+    motivletter: "Required",
+    notes: ""
+  },
+  {
+    id: 6,
+    name: "TU Ilmenau",
+    subject: "Data Science M.Sc.",
+    city: "Ilmenau, Thuringia",
+    type: "TU",
+    link: "https://www.tu-ilmenau.de/en/university/departments/department-of-computer-science-and-automation/",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "2026-02-16",
+    end: "2026-05-15",
+    status: "not-started",
+    fee: 290,
+    pte: "PTE",
+    lom: "",
+    lang: "English",
+    motivletter: "Required",
+    notes: ""
+  },
+  {
+    id: 7,
+    name: "Hochschule Bonn-Rhein-Sieg",
+    subject: "Autonomous Systems M.Sc.",
+    city: "Sankt Augustin, NRW",
+    type: "FH",
+    link: "https://www.h-brs.de/en/access-requirements-and-application-autonomous-systems-msc",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "2026-11-15",
+    end: "2027-02-15",
+    status: "not-started",
+    fee: 310,
+    pte: "PTE",
+    lom: "1 LOM",
+    lang: "English",
+    motivletter: "Required",
+    notes: "Grading system of the university required."
+  },
+  {
+    id: 8,
+    name: "Otto von Guericke Univ. Magdeburg",
+    subject: "Data & Knowledge Engineering M.Sc.",
+    city: "Magdeburg, Saxony-Anhalt",
+    type: "Uni",
+    link: "https://www.ovgu.de/unimagdeburg/en/Study/Study+Programmes/Master/Data+and+Knowledge+Engineering-p-17625.html",
+    method: "Portal",
+    nc: "NC-frei",
+    start: "2026-04-15",
+    end: "2026-05-15",
+    status: "not-started",
+    fee: 300,
+    pte: "PTE",
+    lom: "",
+    lang: "English",
+    motivletter: "",
+    notes: ""
+  }
+];
+/* ===== END DEFAULT DATA ===== */
+
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+let data = [];
+let editingId = null;
+let timerInterval = null;
+let pendingChanges = false;
+
+const STATUS_CONFIG = {
+  'not-started':  { label: 'Not Started',        color: '#64748b' },
+  'in-progress':  { label: 'In Progress',         color: '#2563eb' },
+  'docs-pending': { label: 'Docs Pending',        color: '#7c3aed' },
+  'vpd-pending':  { label: 'VPD Pending',         color: '#d97706' },
+  'lom-pending':  { label: 'LOM Pending',         color: '#db2777' },
+  'applied':      { label: 'Applied ✓',           color: '#059669' },
+  'interview':    { label: 'Interview',            color: '#15803d' },
+  'waitlisted':   { label: 'Waitlisted',           color: '#ca8a04' },
+  'complete':     { label: 'Admitted ✓',          color: '#059669' },
+  'rejected':     { label: 'Rejected ✗',          color: '#dc2626' },
+};
+
+// ══════════════════════════════════════════════════
+// PERSISTENCE — localStorage first, with self-update capability
+// ══════════════════════════════════════════════════
+function loadData() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      data = JSON.parse(stored);
+    } else {
+      data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+      saveData();
+    }
+  } catch(e) {
+    data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  pendingChanges = true;
+  document.getElementById('saveNotice').classList.add('show');
+  setTimeout(() => document.getElementById('saveNotice').classList.remove('show'), 3500);
+}
+
+function nextId() {
+  return data.length ? Math.max(...data.map(d => d.id)) + 1 : 1;
+}
+
+// ══════════════════════════════════════════════════
+// SAVE AS FILE — rewrites the HTML with updated DEFAULT_DATA
+// This is the key cross-browser persistence mechanism
+// ══════════════════════════════════════════════════
+function saveAsFile() {
+  try {
+    const html = document.documentElement.outerHTML;
+    const newDataStr = JSON.stringify(data, null, 2)
+      .split('\n').map((l, i) => i === 0 ? l : '  ' + l).join('\n');
+
+    // Replace the DEFAULT_DATA block
+    const startMarker = '/* ===== DEFAULT DATA ===== */';
+    const endMarker = '/* ===== END DEFAULT DATA ===== */';
+    const startIdx = html.indexOf(startMarker);
+    const endIdx = html.indexOf(endMarker) + endMarker.length;
+
+    if (startIdx === -1 || endIdx === -1) {
+      showToast('Could not find data markers in HTML!', 'error');
+      return;
+    }
+
+    const newHtml = html.slice(0, startIdx) +
+      startMarker + '\nconst DEFAULT_DATA = ' + newDataStr + ';\n' + endMarker +
+      html.slice(endIdx);
+
+    const blob = new Blob([newHtml], { type: 'text/html;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'Germany_Application_Tracker.html';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    pendingChanges = false;
+    showToast('✓ File saved — replace the old HTML with this download', 'success');
+  } catch(e) {
+    showToast('Save failed: ' + e.message, 'error');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════════════
+function getTimeLeft(endDate) {
+  if (!endDate) return null;
+  const end = new Date(endDate + 'T23:59:59');
+  const diff = end - new Date();
+  if (diff <= 0) return { expired: true };
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  return { d, h, m, s, total: diff, expired: false };
+}
+
+function timerClass(t, start) {
+  if (!t || t.expired) return 'expired';
+  if (t.d < 3) return 'urgent';
+  if (t.d < 14) return 'warning';
+  return 'ok';
+}
+
+function barPct(start, end) {
+  if (!start || !end) return 0;
+  const s = new Date(start), e = new Date(end + 'T23:59:59'), n = new Date();
+  const total = e - s;
+  if (total <= 0) return 100;
+  return Math.min(100, Math.max(0, ((n - s) / total) * 100));
+}
+
+function fmtTimer(t) {
+  if (!t) return '<span style="color:var(--text3);font-size:11px">—</span>';
+  if (t.expired) return '<span class="timer expired">Deadline passed</span>';
+  const cls = t.d < 3 ? 'urgent' : t.d < 14 ? 'warning' : 'ok';
+  return `<span class="timer ${cls}">${t.d}d ${String(t.h).padStart(2,'0')}h ${String(t.m).padStart(2,'0')}m ${String(t.s).padStart(2,'0')}s</span>`;
+}
+
+function startTimers() {
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    document.querySelectorAll('.timer-cell').forEach(cell => {
+      const { end: e, start: s } = cell.dataset;
+      if (!e) return;
+      const t = getTimeLeft(e);
+      const cls = timerClass(t, s);
+      const pct = 100 - barPct(s, e);
+      cell.innerHTML = fmtTimer(t) + (e && t && !t.expired
+        ? `<div class="timer-bar-wrap"><div class="timer-bar ${cls}" style="width:${pct}%"></div></div>` : '');
+    });
+  }, 1000);
+}
+
+// ══════════════════════════════════════════════════
+// SORT / GROUP
+// ══════════════════════════════════════════════════
+const STATUS_ORDER = Object.keys(STATUS_CONFIG);
+
+function sortData(arr) {
+  const by = document.getElementById('sortBy').value;
+  return [...arr].sort((a, b) => {
+    if (by === 'deadline')      return (!a.end?1:!b.end?-1:new Date(a.end)-new Date(b.end));
+    if (by === 'deadline_desc') return (!a.end?1:!b.end?-1:new Date(b.end)-new Date(a.end));
+    if (by === 'name')    return a.name.localeCompare(b.name);
+    if (by === 'status')  return STATUS_ORDER.indexOf(a.status)-STATUS_ORDER.indexOf(b.status);
+    if (by === 'fee')     return (a.fee||0)-(b.fee||0);
+    return 0;
+  });
+}
+
+function groupData(arr) {
+  const by = document.getElementById('groupBy').value;
+  if (by === 'none') return { '': arr };
+  const groups = {};
+  arr.forEach(item => {
+    let key;
+    if (by === 'status') key = STATUS_CONFIG[item.status]?.label || 'Unknown';
+    else if (by === 'month') {
+      key = item.end
+        ? new Date(item.end).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+        : 'No Deadline';
+    }
+    else if (by === 'method') key = item.method || 'Unknown Method';
+    else if (by === 'pte')    key = item.pte || 'Unknown';
+    else if (by === 'nc')     key = item.nc || 'Unknown NC';
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(item);
+  });
+  return groups;
+}
+
+// ══════════════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════════════
+function updateStats() {
+  const total   = data.length;
+  const applied = data.filter(d => ['applied','complete','interview'].includes(d.status)).length;
+  const pending = data.filter(d => ['vpd-pending','lom-pending','docs-pending','in-progress'].includes(d.status)).length;
+  const urgent  = data.filter(d => { const t = getTimeLeft(d.end); return t && !t.expired && t.d < 14; }).length;
+
+  document.getElementById('statsRow').innerHTML = [
+    { val: total,   lbl: 'Universities',  color: 'var(--text)' },
+    { val: applied, lbl: 'Applied',       color: 'var(--green)' },
+    { val: pending, lbl: 'In Progress',   color: 'var(--orange)' },
+    { val: urgent,  lbl: '⚠ Urgent',      color: 'var(--red)' },
+  ].map(s => `
+    <div class="stat-pill">
+      <div>
+        <div class="num" style="color:${s.color}">${s.val}</div>
+        <div class="lbl">${s.lbl}</div>
+      </div>
+    </div>
+  `).join('');
+
+  const counts = {};
+  Object.keys(STATUS_CONFIG).forEach(k => counts[k] = 0);
+  data.forEach(d => { if (counts[d.status] !== undefined) counts[d.status]++; });
+  document.getElementById('progressBar').innerHTML = Object.entries(STATUS_CONFIG)
+    .filter(([k]) => counts[k] > 0)
+    .map(([k, cfg]) => `
+      <div class="prog-tag" style="background:${cfg.color}18;border-color:${cfg.color}40;color:${cfg.color}">
+        <span class="prog-dot" style="background:${cfg.color}"></span>
+        ${cfg.label} <span style="opacity:0.7;font-weight:500">(${counts[k]})</span>
+      </div>
+    `).join('');
+}
+
+// ══════════════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════════════
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let filtered = data.filter(d =>
+    !q || d.name.toLowerCase().includes(q)
+      || (d.subject||'').toLowerCase().includes(q)
+      || (d.city||'').toLowerCase().includes(q)
+      || (d.notes||'').toLowerCase().includes(q)
+  );
+  filtered = sortData(filtered);
+  const groups = groupData(filtered);
+
+  let html = '';
+  Object.entries(groups).forEach(([gKey, items]) => {
+    if (gKey) html += `<div class="group-label">${escHtml(gKey)} <span class="group-count">${items.length}</span></div>`;
+
+    html += `<div class="table-wrap"><table><thead><tr>
+      <th onclick="setSortBy('name')">University / Programme <span class="sort-icon">↕</span></th>
+      <th>Method</th>
+      <th>NC</th>
+      <th onclick="setSortBy('deadline')">Deadline <span class="sort-icon">↕</span></th>
+      <th>Time Left</th>
+      <th onclick="setSortBy('status')">Status <span class="sort-icon">↕</span></th>
+      <th>English Req.</th>
+      <th>LOM/LoR</th>
+      <th>Lang.</th>
+      <th onclick="setSortBy('fee')">Sem. Fee <span class="sort-icon">↕</span></th>
+      <th>Notes</th>
+      <th style="width:80px">Actions</th>
+    </tr></thead><tbody>`;
+
+    if (!items.length) {
+      html += `<tr><td colspan="12" class="empty-state"><p>No results.</p></td></tr>`;
+    }
+
+    items.forEach(item => {
+      const t = getTimeLeft(item.end);
+      const expired = t && t.expired;
+      const cfg = STATUS_CONFIG[item.status] || STATUS_CONFIG['not-started'];
+      const tCls = timerClass(t, item.start);
+      const bPct = 100 - barPct(item.start, item.end);
+
+      // NC badge
+      const ncHtml = item.nc
+        ? `<span class="nc-badge ${item.nc === 'NC-frei' ? 'nc-frei' : item.nc === 'NC' ? 'nc-restricted' : 'nc-unknown'}">${escHtml(item.nc)}</span>`
+        : `<span style="color:var(--text3)">—</span>`;
+
+      // Method chip
+      const methodColors = {
+        'Portal': 'chip-blue', 'UniAssist': 'chip-purple',
+        'VPD+Portal': 'chip-orange', 'VPD+UniAssist': 'chip-orange',
+        'Direct': 'chip-teal'
+      };
+      const methodHtml = item.method
+        ? `<span class="chip ${methodColors[item.method]||'chip-gray'}">${escHtml(item.method)}</span>`
+        : `<span style="color:var(--text3)">—</span>`;
+
+      // PTE
+      const pteColors = { 'PTE': 'chip-blue', 'MOI': 'chip-teal', 'PTE+MOI': 'chip-purple',
+                          'IELTS': 'chip-orange', 'TOEFL': 'chip-orange', 'No': 'chip-gray' };
+      const pteHtml = item.pte
+        ? `<span class="chip ${pteColors[item.pte]||'chip-gray'}">${escHtml(item.pte)}</span>`
+        : `<span style="color:var(--text3)">—</span>`;
+
+      // LOM
+      const lomHtml = item.lom
+        ? `<span class="chip ${item.lom.includes('Submitted') ? 'chip-green' : 'chip-pink'}">${escHtml(item.lom)}</span>`
+        : `<span style="color:var(--text3)">—</span>`;
+
+      // Language
+      const langHtml = item.lang
+        ? `<span class="chip chip-gray">${escHtml(item.lang)}</span>`
+        : `<span style="color:var(--text3)">—</span>`;
+
+      html += `
+      <tr class="${expired ? 'expired' : ''}" data-id="${item.id}">
+        <td style="min-width:180px">
+          <span class="uni-name">${escHtml(item.name)}</span>
+          ${item.subject ? `<span class="uni-sub">${escHtml(item.subject)}</span>` : ''}
+          ${item.city ? `<span style="font-size:10px;color:var(--text3);display:block;margin-top:2px">📍 ${escHtml(item.city)}</span>` : ''}
+          ${item.link ? `<a class="uni-link" href="${escHtml(item.link)}" target="_blank">↗ Portal/Link</a>` : ''}
+        </td>
+        <td>${methodHtml}</td>
+        <td>${ncHtml}</td>
+        <td style="white-space:nowrap">
+          ${item.end ? `<span style="font-size:12px;font-weight:600;color:var(--text)">${fmtDate(item.end)}</span>` : '<span style="color:var(--text3)">—</span>'}
+          ${item.start ? `<span style="font-size:10px;color:var(--text3);display:block;margin-top:2px">from ${fmtDate(item.start)}</span>` : ''}
+        </td>
+        <td>
+          <div class="timer-cell" data-end="${item.end||''}" data-start="${item.start||''}">
+            ${fmtTimer(t)}
+            ${item.end && t && !t.expired ? `<div class="timer-bar-wrap"><div class="timer-bar ${tCls}" style="width:${bPct}%"></div></div>` : ''}
+          </div>
+        </td>
+        <td>
+          <span class="badge ${item.status}" onclick="showStatusMenu(event,${item.id})" title="Click to change">
+            <span class="dot ${['in-progress','vpd-pending','lom-pending'].includes(item.status) ? 'pulse' : ''}"></span>
+            ${cfg.label}
+          </span>
+        </td>
+        <td>${pteHtml}</td>
+        <td>${lomHtml}</td>
+        <td>${langHtml}</td>
+        <td style="white-space:nowrap;font-size:12px;font-weight:600;color:var(--text)">
+          ${item.fee ? `€${Number(item.fee).toLocaleString()}` : '<span style="color:var(--text3)">—</span>'}
+        </td>
+        <td style="max-width:180px;font-size:11px;color:var(--text2);word-break:break-word">
+          ${item.notes ? escHtml(item.notes) : '<span style="color:var(--text3)">—</span>'}
+        </td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-edit-sm" onclick="editEntry(${item.id})">✏</button>
+            <button class="btn btn-danger-sm" onclick="deleteEntry(${item.id})">✕</button>
+          </div>
+        </td>
+      </tr>`;
+    });
+
+    html += `</tbody></table></div>`;
+  });
+
+  if (!html) html = `<div class="empty-state"><p>No universities yet. Click "+ Add" to start.</p></div>`;
+  document.getElementById('mainContent').innerHTML = html;
+  updateStats();
+  startTimers();
+}
+
+// ══════════════════════════════════════════════════
+// STATUS MENU
+// ══════════════════════════════════════════════════
+let activeStatusId = null;
+
+function showStatusMenu(e, id) {
+  e.stopPropagation();
+  activeStatusId = id;
+  const menu = document.getElementById('statusMenu');
+  menu.style.display = 'block';
+  menu.style.left = e.clientX + 'px';
+  menu.style.top = e.clientY + 'px';
+  menu.innerHTML = Object.entries(STATUS_CONFIG).map(([key, cfg]) => `
+    <div class="status-menu-item" onclick="setStatus(${id},'${key}')">
+      <span style="width:8px;height:8px;border-radius:50%;background:${cfg.color};display:inline-block"></span>
+      <span style="color:${cfg.color};font-weight:600">${cfg.label}</span>
+    </div>
+  `).join('');
+  setTimeout(() => {
+    const r = menu.getBoundingClientRect();
+    if (r.right  > window.innerWidth)  menu.style.left = (e.clientX - r.width)  + 'px';
+    if (r.bottom > window.innerHeight) menu.style.top  = (e.clientY - r.height) + 'px';
+  }, 0);
+}
+
+function setStatus(id, status) {
+  const item = data.find(d => d.id === id);
+  if (item) { item.status = status; saveData(); render(); showToast(`Status: ${STATUS_CONFIG[status].label}`); }
+  document.getElementById('statusMenu').style.display = 'none';
+}
+
+document.addEventListener('click', () => {
+  document.getElementById('statusMenu').style.display = 'none';
+});
+
+function setSortBy(val) {
+  const el = document.getElementById('sortBy');
+  el.value = el.value === val ? val + '_desc' : val;
+  if (!Array.from(el.options).find(o => o.value === el.value)) el.value = val;
+  render();
+}
+
+// ══════════════════════════════════════════════════
+// MODAL
+// ══════════════════════════════════════════════════
+function openModal(id = null) {
+  editingId = id;
+  document.getElementById('modalTitle').textContent = id ? '✏️ Edit Entry' : '+ Add University';
+  const item = id ? data.find(d => d.id === id) : null;
+
+  const set = (fid, val) => { const el = document.getElementById(fid); if (el) el.value = val || ''; };
+  set('f_name',        item?.name);
+  set('f_subject',     item?.subject);
+  set('f_city',        item?.city);
+  set('f_type',        item?.type);
+  set('f_link',        item?.link);
+  set('f_method',      item?.method);
+  set('f_nc',          item?.nc);
+  set('f_start',       item?.start);
+  set('f_end',         item?.end);
+  set('f_status',      item?.status || 'not-started');
+  set('f_fee',         item?.fee);
+  set('f_pte',         item?.pte);
+  set('f_lom',         item?.lom);
+  set('f_lang',        item?.lang);
+  set('f_motivletter', item?.motivletter);
+  set('f_notes',       item?.notes);
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('f_name').focus();
+}
+
+function editEntry(id) { openModal(id); }
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  editingId = null;
+}
+
+document.getElementById('modalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+function saveEntry() {
+  const name = document.getElementById('f_name').value.trim();
+  if (!name) { showToast('University name is required!', 'error'); return; }
+
+  const get = id => document.getElementById(id)?.value?.trim() || '';
+
+  const entry = {
+    name,
+    subject:     get('f_subject'),
+    city:        get('f_city'),
+    type:        get('f_type'),
+    link:        get('f_link'),
+    method:      get('f_method'),
+    nc:          get('f_nc'),
+    start:       document.getElementById('f_start').value,
+    end:         document.getElementById('f_end').value,
+    status:      document.getElementById('f_status').value,
+    fee:         parseFloat(document.getElementById('f_fee').value) || 0,
+    pte:         get('f_pte'),
+    lom:         get('f_lom'),
+    lang:        get('f_lang'),
+    motivletter: get('f_motivletter'),
+    notes:       get('f_notes'),
+  };
+
+  if (editingId) {
+    const idx = data.findIndex(d => d.id === editingId);
+    if (idx !== -1) { data[idx] = { ...data[idx], ...entry }; showToast('Entry updated'); }
+  } else {
+    entry.id = nextId();
+    data.push(entry);
+    showToast('University added');
+  }
+
+  saveData();
+  closeModal();
+  render();
+}
+
+// ══════════════════════════════════════════════════
+// DELETE
+// ══════════════════════════════════════════════════
+function deleteEntry(id) {
+  const item = data.find(d => d.id === id);
+  if (!item || !confirm(`Remove "${item.name}"?`)) return;
+  data = data.filter(d => d.id !== id);
+  saveData();
+  render();
+  showToast('Entry removed');
+}
+
+// ══════════════════════════════════════════════════
+// EXPORT CSV
+// ══════════════════════════════════════════════════
+function exportCSV() {
+  const headers = ['Name','Subject','City','Type','Link','Method','NC','Start','Deadline','Status','English Req.','LOM','Language','Motiv. Letter','Sem. Fee (€)','Notes'];
+  const rows = data.map(d => [
+    d.name, d.subject, d.city, d.type, d.link, d.method, d.nc,
+    d.start, d.end, STATUS_CONFIG[d.status]?.label, d.pte, d.lom, d.lang, d.motivletter, d.fee, d.notes
+  ].map(v => `"${String(v||'').replace(/"/g,'""')}"`));
+  const csv = [headers.map(h=>`"${h}"`), ...rows].map(r => r.join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+  a.download = 'germany_applications.csv';
+  a.click();
+  showToast('CSV exported');
+}
+
+// ══════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(d) {
+  if (!d) return '';
+  return new Date(d + 'T00:00:00').toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+}
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (type ? ' ' + type : '');
+  setTimeout(() => t.classList.add('show'), 10);
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+  if (e.key === 'n' && !e.ctrlKey && !e.metaKey &&
+      !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) openModal();
+});
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+loadData();
+render();
+</script>
+</body>
+</html>
