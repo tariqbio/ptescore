@@ -126,12 +126,13 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
+  html, body {
+    height: 100%;
+    overflow: hidden; /* page itself never scrolls */
     background: var(--bg);
     color: var(--text);
     font-family: var(--sans);
     font-size: 13px;
-    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -315,7 +316,19 @@
   }
 
   .divider { width: 1px; height: 20px; background: var(--border); flex-shrink: 0; }
-  .ml-auto { margin-left: auto; }
+  .notes-cell {
+    display: block;
+    font-size: 11px;
+    color: var(--text2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+    cursor: default;
+  }
+  .notes-cell:hover {
+    color: var(--text);
+  }
 
   .btn {
     font-family: var(--sans);
@@ -388,7 +401,14 @@
   .cloud-badge.syn { color: var(--accent); border-color: #1d3a6a; background: var(--accent-light); }
 
   /* ── MAIN ── */
-  .main { padding: 24px 32px; }
+  .main {
+    padding: 24px 32px 24px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+  }
 
   .group-label {
     display: flex;
@@ -419,23 +439,30 @@
     font-weight: 600;
   }
 
-  /* ── TABLE ── */
   .table-wrap {
-    overflow-x: auto;
+    overflow: auto;
     border-radius: var(--radius);
     border: 1px solid var(--border);
     box-shadow: var(--shadow-sm);
     background: var(--surface);
-    margin-bottom: 8px;
+    flex: 1 1 auto;
+    min-height: 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border2) transparent;
   }
+  .table-wrap::-webkit-scrollbar { width: 6px; height: 6px; }
+  .table-wrap::-webkit-scrollbar-track { background: transparent; }
+  .table-wrap::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+  .table-wrap::-webkit-scrollbar-thumb:hover { background: var(--text3); }
 
   table {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     border-collapse: collapse;
     font-size: 12px;
   }
 
-  thead { background: var(--surface2); }
+  thead { background: var(--surface2); position: sticky; top: 0; z-index: 10; }
 
   th {
     padding: 10px 14px;
@@ -904,7 +931,7 @@
   @media (max-width: 768px) {
     .header { padding: 0 16px; height: auto; padding-top: 12px; padding-bottom: 12px; flex-wrap: wrap; gap: 8px; }
     .toolbar, .prog-strip { padding: 10px 16px; }
-    .main { padding: 16px; }
+    .main { padding: 16px; height: calc(100vh - 100px); }
     .form-grid { grid-template-columns: 1fr; }
     .header-stats { flex-wrap: wrap; }
   }
@@ -1386,38 +1413,43 @@ function setCloudBadge(state, msg) {
 // PERSISTENCE
 // ══════════════════════════════════════════════════
 async function loadData() {
-  if (USE_CLOUD) {
-    setCloudBadge('syn', '☁ Loading…');
-    try {
-      const res = await fetch(JSONBIN_URL + '/latest', {
-        headers: {
-          'X-Master-Key': JSONBIN_API_KEY,
-          'X-Bin-Meta': 'false'
-        }
-      });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const json = await res.json();
-      // JSONBin stores whatever we PUT — we PUT an array directly
-      data = Array.isArray(json) ? json
-           : (Array.isArray(json.record) ? json.record
-           : (json.data ? json.data : DEFAULT_DATA));
-      setCloudBadge('ok', '☁ Cloud Synced');
-      return;
-    } catch(e) {
-      console.error('Cloud load failed:', e);
-      setCloudBadge('err', '☁ Cloud Error');
-      showToast('Cloud load failed — showing local data', 'error');
-    }
-  } else {
-    // Show setup banner if not configured
-    document.getElementById('setupBanner').style.display = 'flex';
-  }
-  // Fallback: localStorage
+  // ── Step 1: Load localStorage instantly so UI appears immediately ──
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     data = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_DATA));
   } catch(e) {
     data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  }
+
+  if (!USE_CLOUD) {
+    document.getElementById('setupBanner').style.display = 'flex';
+    return; // done — localStorage is the source of truth
+  }
+
+  // ── Step 2: Sync from cloud in background (non-blocking) ──
+  setCloudBadge('syn', '☁ Syncing…');
+  try {
+    const res = await fetch(JSONBIN_URL + '/latest', {
+      headers: {
+        'X-Master-Key': JSONBIN_API_KEY,
+        'X-Bin-Meta': 'false'
+      }
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    const cloudData = Array.isArray(json) ? json
+         : (Array.isArray(json.record) ? json.record
+         : (json.data ? json.data : null));
+    if (cloudData) {
+      data = cloudData;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); // keep local in sync
+      render(); // re-render with fresh cloud data
+    }
+    setCloudBadge('ok', '☁ Cloud Synced');
+  } catch(e) {
+    console.error('Cloud load failed:', e);
+    setCloudBadge('err', '☁ Offline');
+    showToast('Cloud sync failed — showing cached data', 'error');
   }
 }
 
@@ -1752,8 +1784,10 @@ function render() {
         <td style="white-space:nowrap;font-size:12px;font-weight:600;color:var(--text)">
           ${item.fee ? `€${Number(item.fee).toLocaleString()}` : '<span style="color:var(--text3)">—</span>'}
         </td>
-        <td style="max-width:180px;font-size:11px;color:var(--text2);word-break:break-word">
-          ${item.notes ? escHtml(item.notes) : '<span style="color:var(--text3)">—</span>'}
+        <td style="max-width:160px">
+          ${item.notes
+            ? `<span class="notes-cell" title="${escHtml(item.notes)}">${escHtml(item.notes)}</span>`
+            : '<span style="color:var(--text3)">—</span>'}
         </td>
         <td>
           <div class="actions">
@@ -1960,7 +1994,15 @@ if (USE_CLOUD) {
   document.getElementById('saveNotice').style.display = 'none';
 }
 
-loadData().then(() => render());
+// Render immediately from localStorage, cloud sync happens in background
+try {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  data = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+} catch(e) {
+  data = JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+render();
+loadData(); // async — will re-render if cloud has newer data;
 </script>
 </body>
 </html>
